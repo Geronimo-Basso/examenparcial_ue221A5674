@@ -46,27 +46,39 @@
         <parameter key="select_attributes_and_weights" value="false"/>
         <list key="specify_weights"/>
         <process expanded="true">
-          <operator activated="true" class="text:tokenize" compatibility="10.0.000" expanded="true" height="68" name="Tokenize" width="90" x="112" y="34">
+          <operator activated="true" class="text:tokenize" compatibility="10.0.000" expanded="true" height="68" name="Tokenize" width="90" x="313" y="34">
             <parameter key="mode" value="non letters"/>
             <parameter key="characters" value=".:"/>
             <parameter key="language" value="English"/>
             <parameter key="max_token_length" value="3"/>
           </operator>
-          <operator activated="true" class="text:transform_cases" compatibility="10.0.000" expanded="true" height="68" name="Transform Cases" width="90" x="246" y="34">
+          <operator activated="true" class="text:transform_cases" compatibility="10.0.000" expanded="true" height="68" name="Transform Cases" width="90" x="447" y="34">
             <parameter key="transform_to" value="lower case"/>
           </operator>
-          <operator activated="true" class="text:filter_stopwords_english" compatibility="10.0.000" expanded="true" height="68" name="Filter Stopwords (English)" width="90" x="380" y="34"/>
-          <operator activated="true" class="text:filter_by_length" compatibility="10.0.000" expanded="true" height="68" name="Filter Tokens (by Length)" width="90" x="514" y="34">
+          <operator activated="true" class="text:filter_stopwords_english" compatibility="10.0.000" expanded="true" height="68" name="Filter Stopwords (English)" width="90" x="581" y="34"/>
+          <operator activated="true" class="open_file" compatibility="10.2.000" expanded="true" height="68" name="Open File" width="90" x="581" y="238">
+            <parameter key="resource_type" value="file"/>
+            <parameter key="filename" value="/Users/geronimobasso/Documents/RapidMiner/Local Repository/UE-221A5673/Data/CustomStopwordsLDA.txt"/>
+            <parameter key="repository_entry" value="//Local Repository/UE-221A5673/Data/CustomStopwordsLDA.txt"/>
+          </operator>
+          <operator activated="true" class="text:filter_stopwords_dictionary" compatibility="10.0.000" expanded="true" height="82" name="Filter Stopwords (Dictionary)" width="90" x="715" y="34">
+            <parameter key="file" value="C:/Users/jchow/Desktop/EnronLDAStopwords.txt"/>
+            <parameter key="case_sensitive" value="false"/>
+            <parameter key="encoding" value="SYSTEM"/>
+          </operator>
+          <operator activated="true" class="text:filter_by_length" compatibility="10.0.000" expanded="true" height="68" name="Filter Tokens (by Length)" width="90" x="849" y="34">
             <parameter key="min_chars" value="3"/>
             <parameter key="max_chars" value="25"/>
           </operator>
-          <operator activated="true" class="text:generate_n_grams_terms" compatibility="10.0.000" expanded="true" height="68" name="Generate n-Grams (Terms)" width="90" x="648" y="34">
+          <operator activated="true" class="text:generate_n_grams_terms" compatibility="10.0.000" expanded="true" height="68" name="Generate n-Grams (Terms)" width="90" x="983" y="34">
             <parameter key="max_length" value="4"/>
           </operator>
           <connect from_port="document" to_op="Tokenize" to_port="document"/>
           <connect from_op="Tokenize" from_port="document" to_op="Transform Cases" to_port="document"/>
           <connect from_op="Transform Cases" from_port="document" to_op="Filter Stopwords (English)" to_port="document"/>
-          <connect from_op="Filter Stopwords (English)" from_port="document" to_op="Filter Tokens (by Length)" to_port="document"/>
+          <connect from_op="Filter Stopwords (English)" from_port="document" to_op="Filter Stopwords (Dictionary)" to_port="document"/>
+          <connect from_op="Open File" from_port="file" to_op="Filter Stopwords (Dictionary)" to_port="file"/>
+          <connect from_op="Filter Stopwords (Dictionary)" from_port="document" to_op="Filter Tokens (by Length)" to_port="document"/>
           <connect from_op="Filter Tokens (by Length)" from_port="document" to_op="Generate n-Grams (Terms)" to_port="document"/>
           <connect from_op="Generate n-Grams (Terms)" from_port="document" to_port="document 1"/>
           <portSpacing port="source_document" spacing="0"/>
@@ -75,7 +87,7 @@
         </process>
       </operator>
       <operator activated="true" class="store" compatibility="10.2.000" expanded="true" height="68" name="Store (2)" width="90" x="447" y="136">
-        <parameter key="repository_entry" value="//Local Repository/UE-221A5673/Data/tokenaize-dataset"/>
+        <parameter key="repository_entry" value="//Local Repository/UE-221A5673/Data/tokenaize-dataset-wordlist"/>
       </operator>
       <operator activated="true" class="store" compatibility="10.2.000" expanded="true" height="68" name="Store" width="90" x="447" y="34">
         <parameter key="repository_entry" value="//Local Repository/UE-221A5673/Data/tokenaize-dataset"/>
